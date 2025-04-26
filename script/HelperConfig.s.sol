@@ -30,17 +30,17 @@ contract HelperConfig is Script {
     /*//////////////////////////////////////////////////////////////
                           CHAIN CONFIGURATIONS
     //////////////////////////////////////////////////////////////*/
-    function getTestnetConfig() public pure returns (NetworkConfig memory) {
+    function getMainnetConfig() public pure returns (NetworkConfig memory) {
         return NetworkConfig({
-            initialOwner: 0x7Bb8be3D9015682d7AC0Ea377dC0c92B0ba152eF,
-            token: 0x7Bb8be3D9015682d7AC0Ea377dC0c92B0ba152eF
+            initialOwner: 0x0cf66382d52C2D6c1D095c536c16c203117E2B2f,
+            token: 0x0b61C4f33BCdEF83359ab97673Cb5961c6435F4E
         });
     }
 
-    function getMainnetConfig() public pure returns (NetworkConfig memory) {
+    function getTestnetConfig() public pure returns (NetworkConfig memory) {
         return NetworkConfig({
-            initialOwner: 0x7Bb8be3D9015682d7AC0Ea377dC0c92B0ba152eF,
-            token: 0x7Bb8be3D9015682d7AC0Ea377dC0c92B0ba152eF
+            initialOwner: 0xEcA5652Ebc9A3b7E9E14294197A86b02cD8C3A67,
+            token: 0xc8bdD7805fAd8dc59b753FEcCCDf17b98c17465b
         });
     }
 

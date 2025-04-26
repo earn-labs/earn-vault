@@ -46,10 +46,10 @@ slither :; slither ./src
 
 # deployment
 deploy-local: 
-	@forge script script/Deploy.s.sol:Deploy --rpc-url $(RPC_LOCALHOST) --private-key ${DEFAULT_ANVIL_KEY} --sender ${DEFAULT_ANVIL_ADDRESS} --broadcast 
+	@forge script script/DeployEarnVault.s.sol:DeployEarnVault --rpc-url $(RPC_LOCALHOST) --private-key ${DEFAULT_ANVIL_KEY} --sender ${DEFAULT_ANVIL_ADDRESS} --broadcast 
 
-deploy: 
-	@forge script script/Deploy.s.sol:Deploy --rpc-url $(RPC_TEST) --account ${ACCOUNT_NAME} --sender ${ACCOUNT_ADDRESS} --broadcast --verify --etherscan-api-key ${ETHERSCAN_KEY} -vvvv
+deploy-testnet: 
+	@forge script script/DeployEarnVault.s.sol:DeployEarnVault --rpc-url $(RPC_TEST) --account ${ACCOUNT_NAME} --sender ${ACCOUNT_ADDRESS} --broadcast --verify --etherscan-api-key ${ETHERSCAN_KEY} -vvvv
 
 # command line interaction
 contract-call:

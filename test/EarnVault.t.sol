@@ -194,7 +194,7 @@ contract TestScript is Test {
     function test__Revert__InsufficientBalance() public deposited {
         uint256 withdrawalAmount = DEPOSIT_AMOUNT + 1;
 
-        vm.expectRevert(EarnVault.EarnVault__InsufficientBalance.selector);
+        vm.expectRevert(EarnVault.EarnVault__InsufficientVaultBalance.selector);
 
         vm.prank(owner);
         vault.withdraw(withdrawalAmount);

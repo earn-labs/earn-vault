@@ -11,19 +11,16 @@ import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol
 /**
  * @title EarnVault
  * @author Nadina Oates
- * @notice Vault for holding tokens with reflections.
+ * @notice Vault for holding reflection tokens.
+ * @dev The contract owner must be excluded from token rewards.
  */
 contract EarnVault is Ownable {
     using SafeERC20 for IERC20;
 
     /*//////////////////////////////////////////////////////////////
-                                 TYPES
-    //////////////////////////////////////////////////////////////*/
-
-    /*//////////////////////////////////////////////////////////////
                             STATE VARIABLES
     //////////////////////////////////////////////////////////////*/
-    address private immutable i_reflectionToken;
+    IERC20 private immutable i_reflectionToken;
 
     uint256 private s_totalDeposits;
 
@@ -37,13 +34,13 @@ contract EarnVault is Ownable {
     /*//////////////////////////////////////////////////////////////
                                  ERRORS
     //////////////////////////////////////////////////////////////*/
-    error EarnVault__InsufficientBalance();
+    error EarnVault__InsufficientVaultBalance();
 
     /*//////////////////////////////////////////////////////////////
                                FUNCTIONS
     //////////////////////////////////////////////////////////////*/
     constructor(address _owner, address _token) Ownable(_owner) {
-        i_reflectionToken = _token;
+        i_reflectionToken = IERC20(_token);
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -56,7 +53,7 @@ contract EarnVault is Ownable {
      */
     function deposit(uint256 amount) external onlyOwner {
         s_totalDeposits += amount;
-        IERC20(i_reflectionToken).safeTransferFrom(msg.sender, address(this), amount);
+        i_reflectionToken.safeTransferFrom(msg.sender, address(this), amount);
         emit Deposited(msg.sender, amount);
     }
 
@@ -65,14 +62,14 @@ contract EarnVault is Ownable {
      * @param amount token amount to withdraw
      */
     function withdraw(uint256 amount) external onlyOwner {
-        uint256 balance = IERC20(i_reflectionToken).balanceOf(address(this));
-        if (amount > balance) revert EarnVault__InsufficientBalance();
+        uint256 balance = i_reflectionToken.balanceOf(address(this));
+        if (amount > balance) revert EarnVault__InsufficientVaultBalance();
         if (amount > s_totalDeposits) {
             amount = s_totalDeposits;
         }
         s_totalDeposits -= amount;
 
-        IERC20(i_reflectionToken).safeTransfer(msg.sender, amount);
+        i_reflectionToken.safeTransfer(msg.sender, amount);
 
         emit Withdrawn(msg.sender, amount);
     }
@@ -82,7 +79,7 @@ contract EarnVault is Ownable {
      */
     function withdrawReflections() external onlyOwner {
         uint256 amount = _calcReflections();
-        IERC20(i_reflectionToken).safeTransfer(msg.sender, amount);
+        i_reflectionToken.safeTransfer(msg.sender, amount);
 
         emit ReflectionsWithdrawn(msg.sender, amount);
     }
@@ -91,10 +88,10 @@ contract EarnVault is Ownable {
      * @notice Withdraws all tokens from the vault.
      */
     function withdrawAll() external onlyOwner {
-        uint256 amount = IERC20(i_reflectionToken).balanceOf(address(this));
+        uint256 amount = i_reflectionToken.balanceOf(address(this));
         s_totalDeposits = 0;
 
-        IERC20(i_reflectionToken).safeTransfer(msg.sender, amount);
+        i_reflectionToken.safeTransfer(msg.sender, amount);
         emit Withdrawn(msg.sender, amount);
     }
 
@@ -114,7 +111,7 @@ contract EarnVault is Ownable {
      * @notice Updates the total reflections in the vault.
      */
     function _calcReflections() private view returns (uint256) {
-        return IERC20(i_reflectionToken).balanceOf(address(this)) - s_totalDeposits;
+        return i_reflectionToken.balanceOf(address(this)) - s_totalDeposits;
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -124,7 +121,7 @@ contract EarnVault is Ownable {
      * @notice Returns configured reflection token address.
      */
     function getTokenAddress() external view returns (address) {
-        return i_reflectionToken;
+        return address(i_reflectionToken);
     }
 
     /**
