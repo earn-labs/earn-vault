@@ -18,9 +18,9 @@ contract HelperConfig is Script {
     uint256 constant CONSTANT = 0;
 
     constructor() {
-        if (block.chainid == 8453 || block.chainid == 123) {
+        if (block.chainid == 1 || block.chainid == 123) {
             activeNetworkConfig = getMainnetConfig();
-        } else if (block.chainid == 84532 || block.chainid == 84531) {
+        } else if (block.chainid == 11155111) {
             activeNetworkConfig = getTestnetConfig();
         } else {
             activeNetworkConfig = getAnvilConfig();

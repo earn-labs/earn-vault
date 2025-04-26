@@ -131,7 +131,7 @@ contract TestScript is Test {
     }
 
     // ERRORS
-    function test__Revert__NotOwnerDeposits() public approved {
+    function test__Revert__NotOwnerDeposits() public funded(USER1) {
         vm.prank(USER1);
         token.approve(address(vault), DEPOSIT_AMOUNT);
 
@@ -142,6 +142,57 @@ contract TestScript is Test {
     }
 
     /*//////////////////////////////////////////////////////////////
+                        TEST REGISTER DEPOSIT
+    //////////////////////////////////////////////////////////////*/
+
+    // SUCCESS
+    function test__RegisterDeposit() public {
+        vm.startPrank(owner);
+        token.transfer(address(vault), DEPOSIT_AMOUNT);
+        uint256 gasLeft = gasleft();
+        vault.registerDeposit(DEPOSIT_AMOUNT);
+        console.log("Gas used: ", gasLeft - gasleft());
+        vm.stopPrank();
+
+        assertEq(vault.getTotalDeposits(), DEPOSIT_AMOUNT);
+    }
+
+    // EVENTS
+    function test__Emit__RegisterDeposit() public approved {
+        vm.prank(owner);
+        token.transfer(address(vault), DEPOSIT_AMOUNT);
+
+        vm.expectEmit(true, true, true, true);
+        emit Deposited(owner, DEPOSIT_AMOUNT);
+
+        vm.prank(owner);
+        vault.registerDeposit(DEPOSIT_AMOUNT);
+    }
+
+    // ERRORS
+    function test__Revert__NotOwnerRegistersDeposit() public funded(USER1) {
+        vm.prank(USER1);
+        token.transfer(address(vault), DEPOSIT_AMOUNT);
+
+        vm.expectRevert(abi.encodeWithSelector(Ownable.OwnableUnauthorizedAccount.selector, USER1));
+
+        vm.prank(USER1);
+        vault.registerDeposit(DEPOSIT_AMOUNT);
+    }
+
+    function test__Revert__RegistersDepositTooLarge() public deposited withReflections {
+        uint256 reflections = vault.getTotalReflections();
+
+        vm.prank(owner);
+        token.transfer(address(vault), DEPOSIT_AMOUNT);
+
+        vm.expectRevert(EarnVault.EarnVault__InvalidDepositAmount.selector);
+
+        vm.prank(owner);
+        vault.registerDeposit(DEPOSIT_AMOUNT + reflections + 1);
+    }
+
+    /*//////////////////////////////////////////////////////////////
                              TEST WITHDRAW
     //////////////////////////////////////////////////////////////*/
 
@@ -149,8 +200,11 @@ contract TestScript is Test {
     function test__Withdraw() public deposited {
         uint256 withdrawalAmount = 500 ether;
 
-        vm.prank(owner);
+        vm.startPrank(owner);
+        uint256 gasLeft = gasleft();
         vault.withdraw(withdrawalAmount);
+        console.log("Gas used: ", gasLeft - gasleft());
+        vm.stopPrank();
 
         assertEq(vault.getTotalDeposits(), DEPOSIT_AMOUNT - withdrawalAmount);
         assertEq(token.balanceOf(address(vault)), DEPOSIT_AMOUNT - withdrawalAmount);

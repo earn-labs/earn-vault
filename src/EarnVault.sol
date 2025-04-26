@@ -35,6 +35,7 @@ contract EarnVault is Ownable {
                                  ERRORS
     //////////////////////////////////////////////////////////////*/
     error EarnVault__InsufficientVaultBalance();
+    error EarnVault__InvalidDepositAmount();
 
     /*//////////////////////////////////////////////////////////////
                                FUNCTIONS
@@ -54,6 +55,19 @@ contract EarnVault is Ownable {
     function deposit(uint256 amount) external onlyOwner {
         s_totalDeposits += amount;
         i_reflectionToken.safeTransferFrom(msg.sender, address(this), amount);
+        emit Deposited(msg.sender, amount);
+    }
+
+    /**
+     * @notice Deposits token to the vault.
+     * @param amount token amount to deposit
+     */
+    function registerDeposit(uint256 amount) external onlyOwner {
+        uint256 expectedDeposits = s_totalDeposits + amount;
+        if (expectedDeposits > i_reflectionToken.balanceOf(address(this))) {
+            revert EarnVault__InvalidDepositAmount();
+        }
+        s_totalDeposits = expectedDeposits;
         emit Deposited(msg.sender, amount);
     }
 

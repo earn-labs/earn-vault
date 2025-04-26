@@ -1,9 +1,9 @@
 # FOUNDRY STARTER
 
 ![Version](https://img.shields.io/badge/version-1.0.0-blue.svg?style=for-the-badge)
-![Forge](https://img.shields.io/badge/forge-v0.2.0-blue.svg?style=for-the-badge)
+![Forge](https://img.shields.io/badge/forge-v1.0.0-blue.svg?style=for-the-badge)
 ![Solc](https://img.shields.io/badge/solc-v0.8.26-blue.svg?style=for-the-badge)
-[![GitHub License](https://img.shields.io/github/license/trashpirate/foundry-starter?style=for-the-badge)](https://github.com/trashpirate/foundry-starter/blob/master/LICENSE)
+[![GitHub License](https://img.shields.io/github/license/trashpirate/foundry-starter?style=for-the-badge)](https://github.com/trashpirate/earn-vault/blob/master/LICENSE)
 
 [![Website: trashpirate.io](https://img.shields.io/badge/Portfolio-00e0a7?style=for-the-badge&logo=Website)](https://trashpirate.io)
 [![LinkedIn: nadinaoates](https://img.shields.io/badge/LinkedIn-0a66c2?style=for-the-badge&logo=LinkedIn&logoColor=f5f5f5)](https://linkedin.com/in/nadinaoates)
@@ -11,7 +11,7 @@
 
 
 ## About
-Project Description
+Smart contract implementing a simple vault that allows the owner to deposit and withdraw funds. The vault is designed to allow withdrawal of additional rewards that are accumulated in the vault through reflection mechanisms. The vault allows deposits via approval of tokens or via direct transfer. Direct transfers require registering the deposit amount for proper reflection calculations.
 
 ## Installation
 
@@ -61,6 +61,8 @@ $ make deploy-mainnet
 ## Deployments
 
 ### Testnet
+https://sepolia.etherscan.io/address/0x47ad28668b541cd0de8eb11e3090fb37e69f8a60
+
 ### Mainnet
 
 ## Contributing
