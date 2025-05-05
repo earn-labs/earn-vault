@@ -1,4 +1,4 @@
-# FOUNDRY STARTER
+# EARN VAULT
 
 ![Version](https://img.shields.io/badge/version-1.0.0-blue.svg?style=for-the-badge)
 ![Forge](https://img.shields.io/badge/forge-v1.0.0-blue.svg?style=for-the-badge)
@@ -83,7 +83,7 @@ Don't forget to give the project a star! Thanks again!
 👤 **Nadina Oates**
 
 * Website: [trashpirate.io](https://trashpirate.io)
-* Twitter: [@N0xTrashPirate](https://twitter.com/0xTrashPirate)
+* Twitter: [@0xTrashPirate](https://twitter.com/0xTrashPirate)
 * Github: [@trashpirate](https://github.com/trashpirate)
 * LinkedIn: [@nadinaoates](https://linkedin.com/in/nadinaoates)
 
