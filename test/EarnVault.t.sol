@@ -335,13 +335,27 @@ contract TestScript is Test {
     //////////////////////////////////////////////////////////////*/
 
     // SUCCESS
-    function test__WithdrawTokens() public deposited withReflections {
+    function test__WithdrawTokens(uint256 amount) public deposited withReflections {
+        ERC20Mock randToken = sendRandomTokenToVault();
+        uint256 vaultBalance = randToken.balanceOf(address(vault));
+        uint256 ownerBalance = randToken.balanceOf(owner);
+
+        amount = bound(amount, 1, vaultBalance);
+
+        vm.prank(owner);
+        vault.withdrawTokens(address(randToken), amount);
+
+        assertEq(randToken.balanceOf(address(vault)), vaultBalance - amount);
+        assertEq(randToken.balanceOf(owner), ownerBalance + amount);
+    }
+
+    function test__WithdrawTokens__allTokens() public deposited withReflections {
         ERC20Mock randToken = sendRandomTokenToVault();
         uint256 vaultBalance = randToken.balanceOf(address(vault));
         uint256 ownerBalance = randToken.balanceOf(owner);
 
         vm.prank(owner);
-        vault.withdrawTokens(address(randToken));
+        vault.withdrawTokens(address(randToken), 0);
 
         assertEq(randToken.balanceOf(address(vault)), 0);
         assertEq(randToken.balanceOf(owner), ownerBalance + vaultBalance);
@@ -354,6 +368,6 @@ contract TestScript is Test {
         vm.expectRevert(abi.encodeWithSelector(Ownable.OwnableUnauthorizedAccount.selector, USER1));
 
         vm.prank(USER1);
-        vault.withdrawTokens(address(randToken));
+        vault.withdrawTokens(address(randToken), 100 ether);
     }
 }

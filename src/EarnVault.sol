@@ -36,6 +36,7 @@ contract EarnVault is Ownable {
     //////////////////////////////////////////////////////////////*/
     error EarnVault__InsufficientVaultBalance();
     error EarnVault__InvalidDepositAmount();
+    error EarnVault__CannotWithdrawReflectionToken();
 
     /*//////////////////////////////////////////////////////////////
                                FUNCTIONS
@@ -112,8 +113,13 @@ contract EarnVault is Ownable {
     /**
      * @notice Withdraws tokens stuck in the vault.
      */
-    function withdrawTokens(address token) external onlyOwner {
-        uint256 amount = IERC20(token).balanceOf(address(this));
+    function withdrawTokens(address token, uint256 amount) external onlyOwner {
+        if (token == address(i_reflectionToken)) {
+            revert EarnVault__CannotWithdrawReflectionToken();
+        }
+        if (amount == 0) {
+            amount = IERC20(token).balanceOf(address(this));
+        }
         IERC20(token).safeTransfer(msg.sender, amount);
     }
 
