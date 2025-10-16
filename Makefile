@@ -51,6 +51,9 @@ deploy-local:
 deploy-testnet: 
 	@forge script script/DeployEarnVault.s.sol:DeployEarnVault --rpc-url $(RPC_TEST) --account ${ACCOUNT_NAME} --sender ${ACCOUNT_ADDRESS} --broadcast --verify --etherscan-api-key ${ETHERSCAN_KEY} -vvvv
 
+deploy-mainnet: 
+	@forge script script/DeployEarnVault.s.sol:DeployEarnVault --rpc-url $(RPC_MAIN) --account ${ACCOUNT_NAME} --sender ${ACCOUNT_ADDRESS} --broadcast --verify --etherscan-api-key ${ETHERSCAN_KEY} -vvvv
+
 verify:
 	@set -e; \
 	ARGS=$$(cast abi-encode "constructor(address,address)" 0xEcA5652Ebc9A3b7E9E14294197A86b02cD8C3A67 0xc8bdD7805fAd8dc59b753FEcCCDf17b98c17465b); \
