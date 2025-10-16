@@ -8,6 +8,11 @@ optimizer_rounds = 200
 fs_permissions = [{ access = "read", path = "./broadcast" }]
 
 
+[lint]
+exclude_lints = ["mixed-case-variable", "screaming-snake-case-immutable"]
+ignore = ["test/**/*"]
+
+
 [fuzz]
 runs = 10000
 
