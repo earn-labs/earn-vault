@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
+// solhint-disable-next-line
+// solhint-disable
+
 import {Test, console} from "forge-std/Test.sol";
 import {DeployEarnVault} from "script/DeployEarnVault.s.sol";
 import {HelperConfig} from "script/HelperConfig.s.sol";

@@ -64,6 +64,7 @@ $ make deploy-mainnet
 https://sepolia.etherscan.io/address/0x47ad28668b541cd0de8eb11e3090fb37e69f8a60
 
 ### Mainnet
+https://etherscan.io/address/0xcb44a97a62fc7c087c4cc9024dd5a9d3eb9cf81e
 
 ## Contributing
 
